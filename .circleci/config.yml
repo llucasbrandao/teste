@@ -94,7 +94,7 @@ jobs:
 
 workflows:
   version: 2
-  azs-shipping-deployment-workflow:
+  teste-deployment-workflow:
     jobs:
       - build:
           name: Build & Publish Docker Image
