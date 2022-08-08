@@ -1,0 +1,62 @@
+---
+kind: Deployment
+apiVersion: apps/v1
+metadata:
+  name: teste
+  namespace: default
+  labels:
+    allow.http: "false"
+    application: teste
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      application: teste
+  template:
+    metadata:
+      labels:
+        application: teste
+    spec:
+      containers:
+      - name: teste
+        image: llucasbrandao/teste_img:$BUILD_NUM
+        ports:
+        - containerPort: 80
+        securityContext:
+          privileged: true
+  
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: teste
+  namespace: default
+spec:
+  type: ClusterIP
+  ports:
+  - port: 80 # Porta a ser exposta pelo SERVICE
+    targetPort: 80 # Porta que a aplicação está rodando no POD
+  selector:
+    application: teste
+    
+---
+kind: Ingress
+apiVersion: networking.k8s.io/v1
+metadata:
+  name: azs
+  annotations:
+    kubernetes.io/ingress.class: traefik
+    traefik.ingress.kubernetes.io/router.tls: "true"
+    traefik.ingress.kubernetes.io/router.tls.certresolver: default
+spec:
+  rules:
+    - host: teste-img.shafitycore.cyou
+      http:
+        paths:
+          - path : /
+            pathType: Prefix
+            backend:
+              service:
+                name: teste
+                port:
+                  number: 80
