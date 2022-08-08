@@ -94,7 +94,7 @@ jobs:
 
 workflows:
   version: 2
-  teste-deployment-workflow:
+  teste-img-deployment-workflow:
     jobs:
       - build:
           name: Build & Publish Docker Image
