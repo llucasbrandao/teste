@@ -102,6 +102,8 @@ workflows:
             - DOCKER_PERSONAL
       - deployment-approval:
           name: Waiting approval
+          context:
+            - DOCKER_PERSONAL
           type: approval
           requires:
             - Build & Publish Docker Image
