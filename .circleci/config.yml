@@ -51,7 +51,7 @@ jobs:
         kubectl-version: latest 
 
       - kubernetes/install-kubeconfig:
-        kubeconfig: KUBECONFIG_DATA
+        kubeconfig: KUBECONFIG_FILE
         
       - kubernetes/create-or-update-resource:
           resource-name: deployment/teste
@@ -81,7 +81,7 @@ jobs:
         kubectl-version: latest 
 
       - kubernetes/install-kubeconfig:
-        kubeconfig: KUBECONFIG_DATA
+        kubeconfig: KUBECONFIG_FILE
       
       - kubernetes/create-or-update-resource:
           resource-name: deployment/teste
