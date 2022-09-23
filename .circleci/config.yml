@@ -104,6 +104,10 @@ workflows:
           name: Build & Publish Docker Image
           context:
             - DOCKER_PERSONAL
+          filters:
+            branches:
+              only:
+                - dev
       - deployment-approval:
           name: Waiting approval
           context:
@@ -111,6 +115,10 @@ workflows:
           type: approval
           requires:
             - Build & Publish Docker Image
+          filters:
+            branches:
+              only:
+                - dev
       - staging-cluster-deploy:
           name: Deploy to Staging Cluster
           context:
