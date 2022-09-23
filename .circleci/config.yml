@@ -126,8 +126,7 @@ workflows:
           filters:
             branches:
               ignore:
-                - master
-                - main
+                - mdev
           requires:
             - Waiting approval
       - production-cluster-deploy:
