@@ -13,6 +13,7 @@ jobs:
         auth:
           username: $DOCKERHUB_USERNAME
           password: $DOCKERHUB_TOKEN
+
     resource_class: medium
 
     working_directory: ~/teste
@@ -32,11 +33,14 @@ jobs:
           command: |
             echo $DOCKER_TOKEN | docker login -u $DOCKER_USERNAME --password-stdin
             docker push llucasbrandao/teste_img:${CIRCLE_BUILD_NUM}
+
   staging-cluster-deploy:
     description: Staging Cluster Deploy
+
     docker:
       # replace with your preferred image
       - image: cimg/base:stable
+
     resource_class: medium
       
     working_directory: ~/teste
@@ -51,11 +55,7 @@ jobs:
         kubectl-version: latest 
 
       - kubernetes/install-kubeconfig:
-        kubeconfig: KUBECONFIG_FILE
-        
-      - run: 
-          name: Teste
-          command: kubectl get pods -n default -v8
+        kubeconfig: KUBECONFIG_STAGING
         
       - kubernetes/create-or-update-resource:
           resource-name: deployment/teste
@@ -68,9 +68,11 @@ jobs:
 
   production-cluster-deploy:
     description: Production Cluster Deploy
+
     docker:
       # replace with your preferred image
       - image: cimg/base:stable
+      
     resource_class: medium
       
     working_directory: ~/teste
@@ -82,10 +84,10 @@ jobs:
           command: echo "export BUILD_NUM=$(expr ${CIRCLE_BUILD_NUM} - 1)" >> $BASH_ENV
 
       - kubernetes/install-kubectl:
-        kubectl-version: "1.22" 
+        kubectl-version: latest 
 
       - kubernetes/install-kubeconfig:
-        kubeconfig: KUBECONFIG_DATA
+        kubeconfig: KUBECONFIG_FILE
       
       - kubernetes/create-or-update-resource:
           resource-name: deployment/teste
@@ -104,11 +106,6 @@ workflows:
           name: Build & Publish Docker Image
           context:
             - DOCKER_PERSONAL
-          filters:
-            branches:
-              only:
-                - dev
-                
       - deployment-approval:
           name: Waiting approval
           context:
@@ -116,19 +113,17 @@ workflows:
           type: approval
           requires:
             - Build & Publish Docker Image
-          filters:
-            branches:
-              only:
-                - dev
       - staging-cluster-deploy:
           name: Deploy to Staging Cluster
           context:
             - DOCKER_PERSONAL
           filters:
             branches:
-              only:
-                -  llucasbrandao-patch-1 
-
+              ignore:
+                - master
+                - main
+          requires:
+            - Waiting approval
       - production-cluster-deploy:
           name: Deploy to Production Cluster
           context:
