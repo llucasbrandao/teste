@@ -125,10 +125,10 @@ workflows:
             - DOCKER_PERSONAL
           filters:
             branches:
-              ignore:
-                - mdev
-          requires:
-            - Waiting approval
+              only:
+                -  llucasbrandao-patch-1 
+          
+
       - production-cluster-deploy:
           name: Deploy to Production Cluster
           context:
