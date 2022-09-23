@@ -55,7 +55,7 @@ jobs:
         
       - run: 
           name: Teste
-          command: kubectl get pods -n default
+          command: kubectl get pods -n default -v8
         
       - kubernetes/create-or-update-resource:
           resource-name: deployment/teste
