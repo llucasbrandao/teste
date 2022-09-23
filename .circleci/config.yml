@@ -108,6 +108,7 @@ workflows:
             branches:
               only:
                 - dev
+                
       - deployment-approval:
           name: Waiting approval
           context:
@@ -127,8 +128,7 @@ workflows:
             branches:
               only:
                 -  llucasbrandao-patch-1 
-          
-
+                
       - production-cluster-deploy:
           name: Deploy to Production Cluster
           context:
