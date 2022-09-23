@@ -13,6 +13,7 @@ jobs:
         auth:
           username: $DOCKERHUB_USERNAME
           password: $DOCKERHUB_TOKEN
+
     resource_class: medium
 
     working_directory: ~/teste
@@ -32,11 +33,14 @@ jobs:
           command: |
             echo $DOCKER_TOKEN | docker login -u $DOCKER_USERNAME --password-stdin
             docker push llucasbrandao/teste_img:${CIRCLE_BUILD_NUM}
+
   staging-cluster-deploy:
     description: Staging Cluster Deploy
+
     docker:
       # replace with your preferred image
       - image: cimg/base:stable
+
     resource_class: medium
       
     working_directory: ~/teste
@@ -64,9 +68,11 @@ jobs:
 
   production-cluster-deploy:
     description: Production Cluster Deploy
+
     docker:
       # replace with your preferred image
       - image: cimg/base:stable
+
     resource_class: medium
       
     working_directory: ~/teste
