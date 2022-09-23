@@ -55,7 +55,7 @@ jobs:
         kubectl-version: latest 
 
       - kubernetes/install-kubeconfig:
-        kubeconfig: KUBECONFIG_STAGING
+        kubeconfig: KUBECONFIG_DATA
         
       - kubernetes/create-or-update-resource:
           resource-name: deployment/teste
@@ -72,7 +72,7 @@ jobs:
     docker:
       # replace with your preferred image
       - image: cimg/base:stable
-      
+
     resource_class: medium
       
     working_directory: ~/teste
