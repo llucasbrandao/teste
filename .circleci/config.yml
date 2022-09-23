@@ -82,7 +82,7 @@ jobs:
           command: echo "export BUILD_NUM=$(expr ${CIRCLE_BUILD_NUM} - 1)" >> $BASH_ENV
 
       - kubernetes/install-kubectl:
-        kubectl-version: latest 
+        kubectl-version: "1.22" 
 
       - kubernetes/install-kubeconfig:
         kubeconfig: KUBECONFIG_FILE
@@ -128,7 +128,7 @@ workflows:
             branches:
               only:
                 -  llucasbrandao-patch-1 
-                
+
       - production-cluster-deploy:
           name: Deploy to Production Cluster
           context:
